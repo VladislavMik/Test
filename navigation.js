@@ -3,27 +3,29 @@ import { NavigationContainer } from "@react-navigation/native";
 import HomeScreen from "./screens/HomeScreen";
 import SettingsScreen from "./screens/SettingsScreen";
 //import { createNativeStackNavigator } from '@react-navigation/native-stack'
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 
-const Tab = createBottomTabNavigator()
+const Tab = createMaterialTopTabNavigator()
 
 const Navigation = () => {
     return (
+        
         <NavigationContainer>
             <Tab.Navigator
       initialRouteName="Home"
-      activeColor="#e91e63"
-      barStyle={{ backgroundColor: 'tomato' }}
+      screenOptions={{
+        tabBarActiveTintColor: '#e91e63',
+        tabBarLabelStyle: { fontSize: 12, marginTop: 30 },
+        tabBarStyle: { backgroundColor: 'powderblue' },
+    
+      }}
     >
       <Tab.Screen
         name="Home"
         component={HomeScreen}
         options={{
           tabBarLabel: 'Home',
-          tabBarIcon: ({ color }) => (
-            <MaterialCommunityIcons name="home" color={color} size={26} />
-          ),
         }}
       />
       <Tab.Screen
@@ -31,9 +33,6 @@ const Navigation = () => {
         component={SettingsScreen}
         options={{
           tabBarLabel: 'Updates',
-          tabBarIcon: ({ color }) => (
-            <MaterialCommunityIcons name="bell" color={color} size={26} />
-          ),
         }}
       />
     </Tab.Navigator>
