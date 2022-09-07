@@ -2,14 +2,14 @@ import React from "react";
 import { View, Text } from "react-native";
 
 
-const SettingsScreen = () => {
+const GamesScreen = () => {
   return (
     <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-      <Text>Settings</Text>
+      <Text>Games</Text>
       
     </View>
   )
 }
 
 
-export default SettingsScreen
+export default GamesScreen
