@@ -3,7 +3,7 @@ import { View, Text } from "react-native";
 
 const HomeScreen = () => {
   return (
-    <View>
+    <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}} >
       <Text>Hello</Text>
     </View>
   )
