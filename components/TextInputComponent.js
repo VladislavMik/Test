@@ -1,14 +1,15 @@
 import React, { useState } from "react";
 import { Text, TextInput, View, StyleSheet } from "react-native";
 
-const TextInputComponent = ({placeholder, textContentType, errorMessage, placeholderTextColor,value, onChangeText}) => {
+const TextInputComponent = ({placeholder, textContentType, style, errorMessage, placeholderTextColor,value, onChangeText}) => {
     
     
 
 
     return <View> 
     <TextInput 
-    style={styles.textInput}
+    
+    style={style}
     placeholder={placeholder}
     placeholderTextColor={placeholderTextColor}
     value={value}
@@ -19,16 +20,17 @@ const TextInputComponent = ({placeholder, textContentType, errorMessage, placeho
     autoCorrect={false}
     
     />
-    <Text>{errorMessage}</Text>
+    <Text style={{color: 'red', marginLeft: 100, marginTop: 20}}>{errorMessage}</Text>
 </View>
 }
 
 const styles = StyleSheet.create({
     textInput: {
-       
-            backgroundColor: '#FFC0CB',
-            borderRadius: 30,
-            width: '70%',
+            
+           
+            borderBottomColor: 'black',
+            borderBottomWidth: 1,
+            width: 350,
             height: 45,
             alignItems: 'center'
     }

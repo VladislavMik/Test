@@ -1,19 +1,18 @@
 
 import React, { useState } from "react";
 import { View, Text, StyleSheet, TouchableOpacity, Button } from "react-native";
+import { Icon, Input } from "react-native-elements";
 import ButtonComponent from "../components/ButtonComponent";
 import TextInputComponent from '../components/TextInputComponent'
-
+import FontAwesome from 'react-native-vector-icons/FontAwesome'
 
 
 
 const LoginScreen = ({ navigation }) => {
 
-  const [email, setEmail] = useState('')
-  const isEmailValid = (email) => {
-    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-    return re.test(String(email).toLowerCase())
-  }
+  const [pinSecure, setPinSecure] = useState(true)
+
+  const [email, setEmail] = useState()
 
   const [text, setText] = useState('')
   const errorNew = (text) => {
@@ -21,7 +20,7 @@ const LoginScreen = ({ navigation }) => {
       return null
     }
     else if (text.length < 4) {
-      return <Text>Too short password!</Text>
+      return <Text >Too short password!</Text>
     }
     else {
       return null
@@ -37,30 +36,36 @@ const LoginScreen = ({ navigation }) => {
 
 
     <View style={styles.container} >
-      <View style={styles.inputEmail}>
+      
+
+      <Text style={{alignItems: 'flex-start', marginRight: 320, color: 'grey'}}>Email</Text>
         <TextInputComponent
-          placeholder={placeholder = 'Email...'}
-          placeholderTextColor={placeholderTextColor = 'white'}
+          style={[styles.textInput, styles.emailInput]}
+          
+          placeholderTextColor={placeholderTextColor = 'black'}
           onChangeText={(text) => setEmail(text)}
           textContentType={textContentType = 'emailAddress'}
         />
-        {!isEmailValid(email) && email.length > 0 && (<Text style={{ color: 'red' }}>Email Address is not Valid</Text>)}
-      </View>
-      <View style={styles.inputEmail}>
+      
+      <Text style={{alignItems: 'flex-start', marginRight: 290, color: 'grey'}}>Password</Text>
         <TextInputComponent
-          placeholder={placeholder = 'Password'}
-          placeholderTextColor={placeholderTextColor = 'white'}
-          secureTextEntry={secureTextEntry = true}
+          style={styles.textInput}
+          placeholderTextColor={placeholderTextColor = 'black'}
+          secureTextEntry={pinSecure}
           value={text}
           onChangeText={setText}
           errorMessage={errorNew(text)}
 
         />
-      </View>
 
-      <View style={styles.loginBtn}>
-        <ButtonComponent title={title = 'LoginIn'} onPress={onClick} />
-      </View>
+      <TouchableOpacity
+      onPress={() => onClick()}
+      >
+        <linearGradient colors={['#24C6DC', '#514A9D']}
+        style={styles.gradientButton}>
+          <Text style={styles.gradientButtonText}>SIGN IN</Text>
+        </linearGradient>
+      </TouchableOpacity>
     </View>
 
   )
@@ -73,15 +78,23 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center'
   },
-  inputEmail: {
-    backgroundColor: '#FFC0CB',
-    borderRadius: 30,
-    width: '70%',
-    height: 45,
-    marginBottom: 40,
+  inputView: {
     alignItems: 'center',
   },
-
+  gradientButtonText:{
+    color: '#fff'
+  },
+  textInput: {        
+    borderBottomColor: 'black',
+    borderBottomWidth: 1,
+    marginTop: -10,
+    width: 350,
+    height: 45,
+    alignItems: 'center'
+},
+  emailInput: {
+    marginBottom: 50
+  },
   loginBtn: {
     width: '40%',
     borderRadius: 25,
@@ -90,6 +103,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginTop: 40,
     backgroundColor: '#FFC0CB'
+  },
+  gradientButton: {
+    paddingVertical: 12,
+    paddingHorizontal: 30,
+    borderRadius: 4
   }
 
 })
