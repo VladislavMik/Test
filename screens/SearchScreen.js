@@ -8,6 +8,7 @@ import VideosScreen from "./VideosScreen";
 const Top = createMaterialTopTabNavigator()
 
 const SearchScreen = () => {
+  
   return (
     <Top.Navigator screenOptions={{
         tabBarLabelStyle: { fontSize: 12, marginTop: 50 },

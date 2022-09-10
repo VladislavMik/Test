@@ -1,27 +1,26 @@
 import React from "react";
-import { NavigationContainer } from "@react-navigation/native";
-import HomeScreen from "./screens/HomeScreen";
-import SettingsScreen from "./screens/SettingsScreen";
+import LoginScreen from "../screens/LoginScreen";
+import SettingsScreen from "../screens/SettingsScreen";
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
-import SearchScreen from "./screens/SearchScreen";
-import PlayScreen from "./screens/PlayScreen";
+import SearchScreen from "../screens/SearchScreen";
+import PlayScreen from "../screens/PlayScreen";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import Profile from "../screens/ProfileScreen";
+import HomeScreen from '../screens/HomeScreen'
 
-const Bot = createMaterialBottomTabNavigator()
 
-
-const Navigation = () => {
+const BotNavigation = () => {
+  const Bot = createMaterialBottomTabNavigator()
   return (
-
-    <NavigationContainer>
+    
       <Bot.Navigator
-        initialRouteName="Home"
         activeColor="#f0edf6"
         inactiveColor="#3e2465"
 
       >
         <Bot.Screen
-          name="Home"
+          name='Home'
           component={HomeScreen}
           options={{
             tabBarLabel: 'Home',
@@ -31,7 +30,7 @@ const Navigation = () => {
 
         />
         <Bot.Screen
-          name="Settings"
+          name='Settings'
           component={SettingsScreen}
           options={{
             tabBarLabel: 'Settings',
@@ -57,9 +56,30 @@ const Navigation = () => {
               <MaterialCommunityIcons name="play-circle" color={color} size={26} />)
           }}
         />
+        
       </Bot.Navigator>
-    </NavigationContainer>
+      
+   
+  )
+}
+
+
+
+const Navigation = () => {
+  const Stack = createNativeStackNavigator()
+  return (
+    <Stack.Navigator screenOptions={{headerShown: false}}>
+      <Stack.Group>
+      <Stack.Screen name='Login' component={LoginScreen} />  
+      <Stack.Screen name='Profile' component={Profile} />
+      </Stack.Group>
+      <Stack.Group>
+      <Stack.Screen name="BotNavigation" component={BotNavigation} />
+      </Stack.Group>
+    </Stack.Navigator>
   )
 }
 
 export default Navigation
+
+
