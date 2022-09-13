@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Text, TextInput, View, StyleSheet } from "react-native";
 
-const TextInputComponent = ({placeholder, textContentType, style, errorMessage, placeholderTextColor,value, onChangeText}) => {
+const TextInputComponent = ({placeholder, secureTextEntry, keyboardType, textContentType, style, errorMessage, placeholderTextColor,value, onChangeText}) => {
     
     
 
@@ -9,7 +9,7 @@ const TextInputComponent = ({placeholder, textContentType, style, errorMessage, 
     return <View> 
     <TextInput 
     
-    style={style}
+    style={[style, style={borderBottomWidth: 0.9, borderBottomColor: '#e1e3e7'}]}
     placeholder={placeholder}
     placeholderTextColor={placeholderTextColor}
     value={value}
@@ -18,7 +18,9 @@ const TextInputComponent = ({placeholder, textContentType, style, errorMessage, 
     textContentType={textContentType}
     autoComplete='off'
     autoCorrect={false}
-    
+    secureTextEntry={secureTextEntry}
+    keyboardType={keyboardType}
+
     />
     <Text style={{color: 'red', marginLeft: 100, marginTop: 20}}>{errorMessage}</Text>
 </View>

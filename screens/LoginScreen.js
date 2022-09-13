@@ -1,16 +1,19 @@
 
 import React, { useState } from "react";
-import { View, Text, StyleSheet, TouchableOpacity, Button } from "react-native";
-import { Icon, Input } from "react-native-elements";
-import ButtonComponent from "../components/ButtonComponent";
-import TextInputComponent from '../components/TextInputComponent'
-import FontAwesome from 'react-native-vector-icons/FontAwesome'
+import { View, Text, StyleSheet, TouchableOpacity} from "react-native";
+import LinearGradient from "react-native-linear-gradient";
+import TextInputComponent from '../components/TextInputComponent';
+import { Icon } from "react-native-elements";
+
+
+
 
 
 
 const LoginScreen = ({ navigation }) => {
 
-  const [pinSecure, setPinSecure] = useState(true)
+  
+  const [passwordSecured, setPasswordSecured] = useState(true)
 
   const [email, setEmail] = useState()
 
@@ -28,17 +31,17 @@ const LoginScreen = ({ navigation }) => {
   }
 
   const onClick = () => {
-    navigation.navigate('BotNavigation')
+    navigation.navigate('Profile')
   }
 
 
   return (
-
-
     <View style={styles.container} >
       
-
-      <Text style={{alignItems: 'flex-start', marginRight: 320, color: 'grey'}}>Email</Text>
+        <Text style={styles.studentText}>Hi Student</Text>
+        <Text style={styles.continueText}>Sign in to continue</Text>
+      <View style={styles.inputView}>
+      <Text style={styles.emailText}>Email</Text>
         <TextInputComponent
           style={[styles.textInput, styles.emailInput]}
           
@@ -46,26 +49,47 @@ const LoginScreen = ({ navigation }) => {
           onChangeText={(text) => setEmail(text)}
           textContentType={textContentType = 'emailAddress'}
         />
+        <Text style={styles.passwordText}>Password</Text>
+      <View style={{display: 'flex', flexDirection: 'row'}}>
       
-      <Text style={{alignItems: 'flex-start', marginRight: 290, color: 'grey'}}>Password</Text>
         <TextInputComponent
-          style={styles.textInput}
+          style={[styles.textInput, styles.passwordInput]}
           placeholderTextColor={placeholderTextColor = 'black'}
-          secureTextEntry={pinSecure}
+          secureTextEntry={passwordSecured}
           value={text}
           onChangeText={setText}
           errorMessage={errorNew(text)}
-
+          
         />
-
-      <TouchableOpacity
-      onPress={() => onClick()}
-      >
-        <linearGradient colors={['#24C6DC', '#514A9D']}
-        style={styles.gradientButton}>
-          <Text style={styles.gradientButtonText}>SIGN IN</Text>
-        </linearGradient>
+        <TouchableOpacity onPress={() => setPasswordSecured(!passwordSecured)}>
+        <Icon
+        name='eye'
+        type='ant-design'
+        color='#c6cbd4'
+        size={24}
+        style={styles.iconStyle}
+        />
+        </TouchableOpacity>
+        </View>
+    <TouchableOpacity style={styles.button} onPress={() => onClick()} >
+      <LinearGradient
+       start={{x: 0.1, y: 1.0}} end={{x: 0.6, y: 0.5}}
+       colors={['#2855ae', '#3b64b6', '#7292cf']}
+        style={styles.gradient}>
+        <Text style={styles.text}>SIGN IN</Text>
+        <Icon 
+        name='arrowright'
+        type='ant-design'
+        color='white'
+        size={28}
+        style={{paddingLeft: 70}} />
+        
+      </LinearGradient>
       </TouchableOpacity>
+
+      <Text style={styles.forgotText}>Forgot Password?</Text>
+
+      </View>
     </View>
 
   )
@@ -73,42 +97,85 @@ const LoginScreen = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: '#fff',
+    
+    backgroundColor: '#5278c1',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    paddingTop: 400,
+    
+  },
+  emailText: {
+    marginRight: 280, 
+    color: 'grey'
+  },
+  continueText: {
+    color: 'gainsboro', 
+    fontSize: 15, 
+    marginRight: 230, 
+    marginBottom: 50
+  },
+  studentText: {
+    color:"white", 
+    fontSize: 15 , 
+    marginRight: 280, 
+    marginBottom: 30
+  },
+  forgotText: {
+    paddingTop: 20, 
+    marginLeft: 190, 
+    fontSize: 15, 
+    color: '#646464'
+  },
+  passwordText: {
+    paddingRight: 260, 
+    color: 'grey'
   },
   inputView: {
+    width: '100%',
     alignItems: 'center',
-  },
-  gradientButtonText:{
-    color: '#fff'
+    backgroundColor: 'white',
+    borderTopLeftRadius: 30,
+    borderTopRightRadius: 30,
+    paddingTop: 50,
+    height: 1000
   },
   textInput: {        
     borderBottomColor: 'black',
-    borderBottomWidth: 1,
     marginTop: -10,
-    width: 350,
+    width: 316,
     height: 45,
     alignItems: 'center'
+},
+passwordInput: {
+  width: 290
 },
   emailInput: {
     marginBottom: 50
   },
-  loginBtn: {
-    width: '40%',
-    borderRadius: 25,
-    height: 40,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: 40,
-    backgroundColor: '#FFC0CB'
+  iconStyle: {
+    borderBottomWidth: 0.9, 
+    paddingBottom: 10, 
+    borderBottomColor: '#e1e3e7'
   },
-  gradientButton: {
-    paddingVertical: 12,
-    paddingHorizontal: 30,
-    borderRadius: 4
+  gradient: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems:'center',
+    borderRadius: 10,
+    marginTop: 5,
+    display: 'flex',
+    height: 50
+  },
+  button: {
+    width: 316,
+    height: 56,
+  },
+  text: {
+    color: 'white',
+    fontSize: 16,
+    paddingLeft: 110
   }
+
 
 })
 
