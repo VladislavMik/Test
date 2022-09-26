@@ -16,7 +16,7 @@ const Profile = ({ navigation }) => {
         navigation.navigate('BotNavigation')
     }
 
-    return (
+    return ( 
         <View style={styles.Boss}>
             <View style={[{paddingBottom: 40 }, styles.View]}>
                 <TouchableOpacity onPress={goLogin}>

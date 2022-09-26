@@ -1,20 +1,20 @@
 
 import React from "react";
 import { View, Text, StyleSheet, Button } from "react-native";
+import { createDrawerNavigator } from '@react-navigation/drawer';
+
+
+
 
 const PlayScreen = () => {
 
-
+  const Drawer = createDrawerNavigator()
  
 
   return (
-    <View style={styles.header}>
-      <View style={styles.headerText}> 
-        <Text >Play</Text>
-      </View>
-
-
-    </View>
+    <Drawer.Navigator>
+      
+    </Drawer.Navigator>
   )
 }
 
