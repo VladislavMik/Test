@@ -1,37 +1,29 @@
-import React from "react";
-import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import {useNavigation} from '@react-navigation/native';
+import React from 'react';
+import {View, Text, Button, StyleSheet} from 'react-native';
+import {signOut} from '../api/api';
 
-
-const HomeScreen = ({navigation}) => {
-
-   
-
-
-
-    return <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-        <Text>Home</Text> 
-        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Login')}>
-            <Text>Sign Out</Text>
-        </TouchableOpacity>
+const HomeScreen = () => {
+  const navigation = useNavigation();
+  return (
+    <View style={styles.container}>
+      <Text>Hello</Text>
+      <Button
+        title="Sign Out"
+        onPress={async () => {
+          await signOut(), navigation.navigate('Login');
+        }}
+      />
     </View>
-}
-
+  );
+};
 
 const styles = StyleSheet.create({
-    button: {
-        backgroundColor: '#0782F9',
-        width: '60%',
-        padding: 15,
-        borderRadius: 10,
-        alignItems: 'center',
-        marginTop: 15
-    },
-    buttonText: {
-        color: 'white',
-        fontWeight: '700',
-        fontSize: 16
-    }
-})
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+});
 
-
-export default HomeScreen
+export default HomeScreen;

@@ -1,26 +1,75 @@
-
-import React, { useState } from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
-import LinearGradient from "react-native-linear-gradient";
+/* eslint-disable no-shadow */
+/* eslint-disable react-native/no-inline-styles */
+/* eslint-disable no-undef */
+import React, {useState} from 'react';
+import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
+import LinearGradient from 'react-native-linear-gradient';
 import TextInputComponent from '../components/TextInputComponent';
-import { Icon } from "react-native-elements";
-import { useDispatch, useSelector } from "react-redux";
-import { fetchRegister } from "../actions/registerAction";
-import { fetchLogin } from '../actions/signInAction'
-import { validationEmail, validationPassword, emailErrorMessage, passwordErrorMessage} from "../utils/validation";
-import { useNavigation } from "@react-navigation/native";
-
+import {Icon} from 'react-native-elements';
+import {
+  validationEmail,
+  validationPassword,
+  emailErrorMessage,
+  passwordErrorMessage,
+} from '../utils/validation';
+import {useNavigation} from '@react-navigation/native';
+import {signIn, writeDatabase} from '../api/api';
 
 const LoginScreen = () => {
-  const navigation = useNavigation()
-  const dispatch = useDispatch()
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const emailError = useSelector(state => state.emailError)
-  const passwordError = useSelector(state => state.passwordError)
+  const navigation = useNavigation();
+  const [emailErr, setEmailErr] = useState(null);
+  const [passErr, setPassErr] = useState(null);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
+  const respErrorForRegister = async () => {
+    try {
+      const response = await writeDatabase(email, password);
+      if (response) {
+        const splResponse = response.slice(5, response.length);
+        if (response?.includes('Email' && 'email')) {
+          setEmailErr(splResponse);
+        } else if (response?.includes('Password' && 'password')) {
+          setPassErr(splResponse);
+        }
+      } else {
+        setEmail('');
+        setPassword('');
+        setEmailErr('');
+        setPassErr('');
+        navigation.navigate('Home');
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const respErrorForSignIn = async () => {
+    try {
+      const response = await signIn(email, password);
+      if (response) {
+        if (response?.includes('Email' && 'email' && 'identifier')) {
+          setEmailErr(response);
+        } else if (response?.includes('Password' && 'password')) {
+          setPassErr(response);
+        }
+      } else {
+        setEmail('');
+        setPassword('');
+        setEmailErr('');
+        setPassErr('');
+        navigation.navigate('Home');
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
+  const nullData = () => {
+    setEmailErr('');
+    setPassErr('');
+  };
   return (
-    <View style={styles.container} >
+    <View style={styles.container}>
       <Text style={styles.studentText}>Hi Student</Text>
       <Text style={styles.continueText}>Sign in to continue</Text>
       <View style={styles.inputView}>
@@ -28,67 +77,85 @@ const LoginScreen = () => {
         <TextInputComponent
           style={[styles.textInput, styles.emailInput]}
           value={email}
-          placeholderTextColor={placeholderTextColor = 'black'}
+          placeholderTextColor={(placeholderTextColor = 'black')}
           onChangeText={email => {
             setEmail(email);
-            validationEmail(email)
+            validationEmail(email);
           }}
-          textContentType={textContentType = 'emailAddress'}
-          errorMessage={emailError}
-          
+          errorMessage={emailErr}
+          textContentType={(textContentType = 'emailAddress')}
+          onBlur={nullData}
         />
-        {validationEmail(email) !== null ? <Text style={{color: 'red'}}>{emailErrorMessage}</Text> : null}
+        {validationEmail(email) !== null ? (
+          <Text style={{color: 'red'}}>{emailErrorMessage}</Text>
+        ) : null}
         <Text style={styles.passwordText}>Password</Text>
-        <View style={{ display: 'flex', flexDirection: 'row' }}>
+        <View style={{display: 'flex', flexDirection: 'row'}}>
           <TextInputComponent
             style={[styles.textInput, styles.passwordInput]}
-            placeholderTextColor={placeholderTextColor = 'black'}
+            placeholderTextColor={(placeholderTextColor = 'black')}
             value={password}
-            onChangeText={(password) => {
+            onChangeText={password => {
               setPassword(password);
-              validationPassword(password)
+              validationPassword(password);
+              nullData();
             }}
-            errorMessage={passwordError}
+            errorMessage={passErr}
             isDisplayEye
             isPasswordSecured
+            onBlur={nullData}
           />
         </View>
-        {validationPassword(password) !== null ? <Text style={{color: 'red'}}>{passwordErrorMessage}</Text> : null}
-        <View style={{ paddingTop: 30 }}>
-          <TouchableOpacity style={styles.button} onPress={() => dispatch(fetchLogin(email, password))} >
+        {validationPassword(password) !== null ? (
+          <Text style={{color: 'red'}}>{passwordErrorMessage}</Text>
+        ) : null}
+        <View style={{paddingTop: 30}}>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => {
+              respErrorForSignIn();
+            }}>
             <LinearGradient
-              start={{ x: 0.1, y: 1.0 }} end={{ x: 0.6, y: 0.5 }}
+              start={{x: 0.1, y: 1.0}}
+              end={{x: 0.6, y: 0.5}}
               colors={['#2855ae', '#3b64b6', '#7292cf']}
               style={styles.gradient}>
               <Text style={styles.text}>SIGN IN</Text>
               <Icon
-                name='arrowright'
-                type='ant-design'
-                color='white'
+                name="arrowright"
+                type="ant-design"
+                color="white"
                 size={28}
-                style={{ paddingLeft: 70 }} />
+                style={{paddingLeft: 70}}
+              />
             </LinearGradient>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.button} onPress={() => dispatch(fetchRegister(email, password))} >
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => {
+              respErrorForRegister();
+            }}>
             <LinearGradient
-              start={{ x: 0.1, y: 1.0 }} end={{ x: 0.6, y: 0.5 }}
+              start={{x: 0.1, y: 1.0}}
+              end={{x: 0.6, y: 0.5}}
               colors={['#2855ae', '#3b64b6', '#7292cf']}
               style={styles.gradient}>
               <Text style={styles.text}>Register</Text>
               <Icon
-                name='arrowright'
-                type='ant-design'
-                color='white'
+                name="arrowright"
+                type="ant-design"
+                color="white"
                 size={28}
-                style={{ paddingLeft: 70 }} />
+                style={{paddingLeft: 70}}
+              />
             </LinearGradient>
           </TouchableOpacity>
         </View>
         <Text style={styles.forgotText}>Forgot Password?</Text>
       </View>
     </View>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -99,30 +166,30 @@ const styles = StyleSheet.create({
   },
   emailText: {
     marginRight: 280,
-    color: 'grey'
+    color: 'grey',
   },
   continueText: {
     color: 'gainsboro',
     fontSize: 15,
     marginRight: 230,
-    marginBottom: 50
+    marginBottom: 50,
   },
   studentText: {
-    color: "white",
+    color: 'white',
     fontSize: 15,
     marginRight: 280,
-    marginBottom: 30
+    marginBottom: 30,
   },
   forgotText: {
     paddingTop: 20,
     marginLeft: 190,
     fontSize: 15,
-    color: '#646464'
+    color: '#646464',
   },
   passwordText: {
     paddingTop: 20,
     paddingRight: 260,
-    color: 'grey'
+    color: 'grey',
   },
   inputView: {
     width: '100%',
@@ -131,22 +198,18 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
     paddingTop: 50,
-    height: 1000
+    height: 1000,
   },
   textInput: {
     borderBottomColor: 'black',
     width: 316,
     height: 45,
-    alignItems: 'center'
+    alignItems: 'center',
   },
   passwordInput: {
     width: 290,
-    
-    
   },
-  emailInput: {
-  
-  },
+  emailInput: {},
   gradient: {
     flexDirection: 'row',
     justifyContent: 'center',
@@ -154,7 +217,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     marginTop: 5,
     display: 'flex',
-    height: 50
+    height: 50,
   },
   button: {
     width: 316,
@@ -163,21 +226,11 @@ const styles = StyleSheet.create({
   text: {
     color: 'white',
     fontSize: 16,
-    paddingLeft: 110
+    paddingLeft: 110,
   },
   textError: {
-    color: 'red'
-  }
-})
+    color: 'red',
+  },
+});
 
-export default LoginScreen
-
-
-
-
-
-
-
-
-
-
+export default LoginScreen;
